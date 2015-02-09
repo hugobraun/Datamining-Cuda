@@ -3,7 +3,7 @@
 
 #include <sstream>
 #include "dataLoader.h"
-
+#include <math.h>
 #include "configuration.h"
 
 #import "CPU/cpu_knn.h"
@@ -17,15 +17,26 @@ int main() {
 
 	loadData("data.csv", cdata, data);
 
-	int ipoint = 5;
-	int * point = new int[DIM];
 
-	for(int i = 0; i < DIM; i++)
-		point[i] = data[ipoint * DIM + i];
+	int itest = 0;
+	int fails = 0;
+
+	for(int ipoint = NLEARN; ipoint < N; ipoint++) {
+		int * point = new int[DIM];
+
+		for(int i = 0; i < DIM; i++)
+			point[i] = data[ipoint * DIM + i];
 
 
+		if(cpu_knn(cdata, data, point, 2) != cdata[ipoint])
+			fails++;
 
-	cout << "kNN class : " << cpu_knn(cdata, data, point, 2) << " expected : " << cdata[5];
+		itest++;
+	}
+
+	double r = (double)fails / (double)itest;
+
+	cout << "Error rate : " << r;
 
 	return 0;
 
