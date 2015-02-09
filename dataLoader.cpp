@@ -4,11 +4,12 @@
 #include <sstream>
 #include "dataLoader.h"
 
+#include "configuration.h"
+
+#import "CPU/cpu_knn.h"
 
 using namespace std;
 
-#define DIM 166
-#define N 5622
 
 int main() {
 	int * data = new int[DIM*N];
@@ -16,6 +17,15 @@ int main() {
 
 	loadData("data.csv", cdata, data);
 
+	int ipoint = 5;
+	int * point = new int[DIM];
+
+	for(int i = 0; i < DIM; i++)
+		point[i] = data[ipoint * DIM + i];
+
+
+
+	cout << "kNN class : " << cpu_knn(cdata, data, point, 2) << " expected : " << cdata[5];
 
 	return 0;
 
