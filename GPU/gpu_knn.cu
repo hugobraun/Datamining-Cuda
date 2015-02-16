@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "../configuration.h"
+#include "gpu_knn.h"
 
 const int blocksize = 16;
 
@@ -52,5 +53,6 @@ int gpu_knn(int * cdata_c, int * data_c, int * point_c, int nclass) {
 	printf("Distance on index 14 : %f", distance[14]);	
 	return -1;
 }
+
 
 

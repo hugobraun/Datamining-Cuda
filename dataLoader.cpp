@@ -7,7 +7,7 @@
 #include "configuration.h"
 
 #include "CPU/cpu_knn.h"
-#include "GPU/gpu_knn.cu"
+#include "GPU/gpu_knn.h"
 
 
 using namespace std;
@@ -32,6 +32,7 @@ int main() {
 
 		if(cpu_knn(cdata, data, point, 2) != cdata[ipoint])
 			fails++;
+		gpu_knn(cdata, data, point, 2);
 
 		itest++;
 	}
@@ -39,8 +40,8 @@ int main() {
 	double r = (double)fails / (double)itest;
 	
 	
-	gpu_knn(cdata, data, point, 2);
 	
+
 	cout << "Error rate : " << r;
 
 	return 0;
