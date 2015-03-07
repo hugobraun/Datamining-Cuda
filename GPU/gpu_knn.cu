@@ -8,7 +8,6 @@
 #include "gpu_knn.h"
 
 const int blocksize = 16;
-
 __global__ void gpu_distance(int* data, float* distance, int* point, int n, int dim) {
 	int i = blockIdx.x * blockDim.x + threadIdx.x;
 	
@@ -26,7 +25,7 @@ __global__ void gpu_distance(int* data, float* distance, int* point, int n, int 
 int gpu_knn(int * cdata_c, int * data_c, int * point_c, int nclass) {
 	
 	int datasize = N*DIM*sizeof(int);
-	int nblock = blocksize, nthread = N / nblock;
+	int nblock = N / blocksize, nthread = blocksize;
 	
 	float *distance = new float[N]; 
 
@@ -50,7 +49,6 @@ int gpu_knn(int * cdata_c, int * data_c, int * point_c, int nclass) {
  	checkCudaErrors(cudaFree(d_point)); 
 	
 
-	printf("Distance on index 14 : %f", distance[14]);	
 	return -1;
 }
 

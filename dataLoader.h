@@ -14,5 +14,4 @@ using namespace std;
 
 void loadData(string filename, int * cdata, int * data);
 
-
 #endif /* DATALOADER_H_ */

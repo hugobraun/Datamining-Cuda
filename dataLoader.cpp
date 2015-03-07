@@ -9,6 +9,8 @@
 #include "CPU/cpu_knn.h"
 #include "GPU/gpu_knn.h"
 
+#include "dataSplitter.h"
+
 
 using namespace std;
 
@@ -19,30 +21,43 @@ int main() {
 
 	loadData("data.csv", cdata, data);
 
+	int ntest = N / 10;
 
-	int itest = 0;
-	int fails = 0;
+	for(int i = 0; i < 9; i++) {
+		int * cdatatest = new int[ntest];
+		int * cdatatrain = new int[N - ntest];
 
-	for(int ipoint = NLEARN; ipoint < N; ipoint++) {
-		int * point = new int[DIM];
+		int * datatest = new int[ntest*DIM];
+		int * datatrain = new int[(N - ntest)*DIM];
 
-		for(int i = 0; i < DIM; i++)
-			point[i] = data[ipoint * DIM + i];
+		splitData(data, datatrain, datatest, cdata, cdatatrain, cdatatest, N, DIM, i * ntest, (i+1)*ntest);
 
 
-		if(cpu_knn(cdata, data, point, 2) != cdata[ipoint])
-			fails++;
-		gpu_knn(cdata, data, point, 2);
+		int itest = 0;
+		int fails = 0;
 
-		itest++;
+		for(int t = 0; t < ntest; t++) {
+			int * point = new int[DIM];
+
+			getPoint(datatest, point, t, DIM);
+
+
+
+
+
+			if(gpu_knn(cdatatrain, data, point, 125) != cdatatest[t])
+				fails++;
+			itest++;
+		}
+
+		double r = (double)fails / (double)itest;
+
+		cout << "Error rate on test " << i << " : " << r << endl;
+
+
 	}
 
-	double r = (double)fails / (double)itest;
 	
-	
-	
-
-	cout << "Error rate : " << r;
 
 	return 0;
 
@@ -66,6 +81,7 @@ void loadData(string filename, int * cdata, int * data) {
 
 			while(getline(lineStream,cell,',')) {
 				int d = atoi(cell.c_str());
+
 				data[DIM * i + j] = d;
 				j++;
 			}
@@ -73,5 +89,10 @@ void loadData(string filename, int * cdata, int * data) {
 			i++;
 			}
 			file.close();
+		} else {
+			cout << "Could not open file !";
+			exit(1);
 		}
+
+		cout << "Done loading data" << endl;
 }

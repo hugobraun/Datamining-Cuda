@@ -10,7 +10,7 @@
 
 
 #define DIM 166
-#define N 5622
+#define N 1000000
 #define K 6
 
 #define NLEARN 1000
