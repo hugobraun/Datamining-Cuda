@@ -13,9 +13,10 @@
 
 
 using namespace std;
-
+/*
 
 int main() {
+	/*
 	int * data = new int[DIM*N];
 	int * cdata = new int[N];
 
@@ -57,11 +58,12 @@ int main() {
 
 	}
 
-	
+
 
 	return 0;
 
 }
+*/
 
 void loadData(string filename, int * cdata, int * data) {
 	ifstream file;
