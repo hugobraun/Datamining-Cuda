@@ -10,6 +10,8 @@
 #include "GPU/gpu_knn.h"
 
 #include "dataSplitter.h"
+#include "GPU/gpu_sort.h"
+#include "CPU/cpu_sort.h"
 
 
 using namespace std;
@@ -21,6 +23,14 @@ int main() {
 
 	loadData("data.csv", cdata, data);
 
+	gpu_quicksort_benchmark(data, DIM*N, 1);
+
+	loadData("data.csv", cdata, data);
+
+	cpu_benchmark_sort(data, DIM*N, 1);
+
+
+	exit(1);
 	int ntest = N / 10;
 
 	for(int i = 0; i < 9; i++) {
@@ -32,7 +42,6 @@ int main() {
 
 		splitData(data, datatrain, datatest, cdata, cdatatrain, cdatatest, N, DIM, i * ntest, (i+1)*ntest);
 
-
 		int itest = 0;
 		int fails = 0;
 
@@ -41,12 +50,9 @@ int main() {
 
 			getPoint(datatest, point, t, DIM);
 
-
-
-
-
 			if(gpu_knn(cdatatrain, data, point, 125) != cdatatest[t])
 				fails++;
+
 			itest++;
 		}
 

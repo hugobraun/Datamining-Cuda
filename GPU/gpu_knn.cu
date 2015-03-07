@@ -43,12 +43,12 @@ int gpu_knn(int * cdata_c, int * data_c, int * point_c, int nclass) {
 	gpu_distance<<<nblock,nthread>>>(d_data,d_distance,d_point,N,DIM);
 
 	checkCudaErrors(cudaMemcpy(distance, d_distance, N*sizeof(float), cudaMemcpyDeviceToHost));
-	
+
 	checkCudaErrors(cudaFree(d_distance)); 
  	checkCudaErrors(cudaFree(d_data)); 
  	checkCudaErrors(cudaFree(d_point)); 
 	
-
+ 	printf("Memory 6 \n");
 	return -1;
 }
 
